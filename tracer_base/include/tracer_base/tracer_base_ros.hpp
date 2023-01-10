@@ -37,6 +37,7 @@ class TracerBaseRos : public rclcpp::Node {
 
   bool simulated_robot_ = false;
   int sim_control_rate_ = 50;
+  bool battery_status_ = true;
 
 
   std::shared_ptr<TracerRobot> robot_;

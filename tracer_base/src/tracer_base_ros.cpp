@@ -24,6 +24,7 @@ TracerBaseRos::TracerBaseRos(std::string node_name)
   this->declare_parameter("is_tracer_mini", false);
   this->declare_parameter("simulated_robot", false);
   this->declare_parameter("control_rate", 50);
+  this->declare_parameter<bool>("battery_status", true);
 
   LoadParameters();
 }
@@ -38,6 +39,7 @@ void TracerBaseRos::LoadParameters() {
   this->get_parameter_or<bool>("is_tracer_mini", is_tracer_mini_, false);
   this->get_parameter_or<bool>("simulated_robot", simulated_robot_, false);
   this->get_parameter_or<int>("control_rate", sim_control_rate_, 50);
+  this->get_parameter_or<bool>("battery_status", battery_status_, true);
 
   std::cout << "Loading parameters: " << std::endl;
   std::cout << "- port name: " << port_name_ << std::endl;
@@ -117,6 +119,7 @@ void TracerBaseRos::Run() {
   rclcpp::Rate rate(50);
   while (keep_running_) {
     messenger->PublishStateToROS();
+    if (battery_status_) messenger->PublishBatteryStatus();
     rclcpp::spin_some(shared_from_this());
     rate.sleep();
   }

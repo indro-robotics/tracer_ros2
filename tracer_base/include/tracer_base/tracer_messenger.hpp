@@ -86,30 +86,35 @@ class TracerMessenger {
     // Min battery voltage is 40V if battery voltage is above 30 V
     battery_msg.voltage = state.system_state.battery_voltage; 
     if (battery_msg.voltage < 35) {
-      battery_msg.percentage = 3.5363083052703092e-003 * pow(battery_msg.voltage, 4) 
-        -6.0604460460754128e-001 * pow(battery_msg.voltage, 3) +  
-        3.7954435576128162e+001 * pow(battery_msg.voltage, 2) -
-        1.0167870628390317e+003 * battery_msg.voltage + 
-        9.6926828595033203e+003; //created from https://arachnoid.com/polysolve/
+      double tmp_percentage = 0.65085267771558497 * pow((battery_msg.voltage), 4) - 
+        68.168813766265387 * pow((battery_msg.voltage), 3) + 
+        2669.0893112435269 * pow((battery_msg.voltage), 2) -
+        46282.892652307622 * battery_msg.voltage + 
+        299832.86802959372; //created from https://arachnoid.com/polysolve/
       // Ensure percentage is between 0 and 100
-      if (battery_msg.percentage < 0) {
-        battery_msg.percentage = 0;
-      } else if (battery_msg.percentage > 100) {
-        battery_msg.percentage = 100;
+      if (tmp_percentage < 0) {
+        tmp_percentage = 0;
+      } else if (tmp_percentage > 100) {
+        tmp_percentage = 100;
+      } else {
+        battery_msg.percentage = tmp_percentage;
       }
       battery_msg.design_capacity = 30; // 30Ah
     } else {
-      battery_msg.percentage = 6.5085267771558497e-001 * pow(battery_msg.voltage, 4) - 
-        6.8168813766265387e+001 * pow(battery_msg.voltage, 3) + 
-        2.6690893112435269e+003*pow(battery_msg.voltage, 2) -
-        4.6282892652307622e+004 * battery_msg.voltage + 
-        2.9983286802959372e+005; //created from https://arachnoid.com/polysolve/
+
+      double tmp_percentage = 0.0035363083052703092 * pow(battery_msg.voltage, 4) 
+        -0.60604460460754128 * pow(battery_msg.voltage, 3) +  
+        37.954435576128162 * pow(battery_msg.voltage, 2) -
+        1016.7870628390317 * battery_msg.voltage + 
+        9692.6828595033203;
       // battery_msg.design_capacity = 60; // 60Ah
       // Ensure percentage is between 0 and 100
-      if (battery_msg.percentage < 0) {
-        battery_msg.percentage = 0;
-      } else if (battery_msg.percentage > 100) {
-        battery_msg.percentage = 100;
+      if (tmp_percentage < 0) {
+        tmp_percentage = 0;
+      } else if (tmp_percentage > 100) {
+        tmp_percentage = 100;
+      } else {
+        battery_msg.percentage = tmp_percentage;
       }
     }
 

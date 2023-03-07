@@ -82,15 +82,35 @@ class TracerMessenger {
     battery_msg.current = (actuator.actuator_hs_state[0].current + actuator.actuator_hs_state[1].current)/2;
     // if battery voltage is below 35 V, the max voltage is 29.4
     // if battery voltage is above 35 V, the max voltage is 54.6V
-    // Min battery voltage is 20V
+    // Min battery voltage is 24V
     // Min battery voltage is 40V if battery voltage is above 30 V
     battery_msg.voltage = state.system_state.battery_voltage; 
     if (battery_msg.voltage < 35) {
-      battery_msg.percentage = (battery_msg.voltage - 23) / 6.4; // Current voltage - min, divided by difference between max and min
+      battery_msg.percentage = 3.5363083052703092e-003 * pow(battery_msg.voltage, 4) 
+        -6.0604460460754128e-001 * pow(battery_msg.voltage, 3) +  
+        3.7954435576128162e+001 * pow(battery_msg.voltage, 2) -
+        1.0167870628390317e+003 * battery_msg.voltage + 
+        9.6926828595033203e+003; //created from https://arachnoid.com/polysolve/
+      // Ensure percentage is between 0 and 100
+      if (battery_msg.percentage < 0) {
+        battery_msg.percentage = 0;
+      } else if (battery_msg.percentage > 100) {
+        battery_msg.percentage = 100;
+      }
       battery_msg.design_capacity = 30; // 30Ah
     } else {
-      battery_msg.percentage = (battery_msg.voltage - 40) / 14.6;
-      battery_msg.design_capacity = 60; // 60Ah
+      battery_msg.percentage = 1.2102125617650465 * pow(battery_msg.voltage, 4) -
+        1.2941748701562241e+002 * pow(battery_msg.voltage, 3) + 
+        5.1785103640424368e+003 * pow(battery_msg.voltage, 2) -
+        9.1872241288551668e+004 * battery_msg.voltage + 
+        6.0966969982377824e+005; //created from https://arachnoid.com/polysolve/
+      // battery_msg.design_capacity = 60; // 60Ah
+      // Ensure percentage is between 0 and 100
+      if (battery_msg.percentage < 0) {
+        battery_msg.percentage = 0;
+      } else if (battery_msg.percentage > 100) {
+        battery_msg.percentage = 100;
+      }
     }
 
     battery_status_pub_->publish(battery_msg);

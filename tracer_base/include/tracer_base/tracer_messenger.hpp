@@ -99,11 +99,11 @@ class TracerMessenger {
       }
       battery_msg.design_capacity = 30; // 30Ah
     } else {
-      battery_msg.percentage = 1.2102125617650465 * pow(battery_msg.voltage, 4) -
-        1.2941748701562241e+002 * pow(battery_msg.voltage, 3) + 
-        5.1785103640424368e+003 * pow(battery_msg.voltage, 2) -
-        9.1872241288551668e+004 * battery_msg.voltage + 
-        6.0966969982377824e+005; //created from https://arachnoid.com/polysolve/
+      battery_msg.percentage = 6.5085267771558497e-001 * pow(battery_msg.voltage, 4) - 
+        6.8168813766265387e+001 * pow(battery_msg.voltage, 3) + 
+        2.6690893112435269e+003*pow(battery_msg.voltage, 2) -
+        4.6282892652307622e+004 * battery_msg.voltage + 
+        2.9983286802959372e+005; //created from https://arachnoid.com/polysolve/
       // battery_msg.design_capacity = 60; // 60Ah
       // Ensure percentage is between 0 and 100
       if (battery_msg.percentage < 0) {

@@ -28,7 +28,6 @@
 
     <xacro:property name="robot_namespace" value="/tracer" />
 
-
     <link name="base_link">
         <visual>
             <origin xyz="0 0 0" rpy="1.57 0 0" />
@@ -82,7 +81,6 @@
         <origin xyz="${-track/2} ${wheelbase/2} ${castor_offset-0.0528886}" rpy="-1.57 0 0" />
     </xacro:tracer_castor_joint>
 
-
     <xacro:tracer_castor_wheel name="front_right">
         <origin xyz="-0.0218084 ${-wheel_vertical_offset-0.0150} 0" rpy="0 0 0" />
     </xacro:tracer_castor_wheel>
@@ -96,8 +94,6 @@
         <origin xyz="-0.0218084 ${-wheel_vertical_offset-0.0150} 0" rpy="0 0 0" />
     </xacro:tracer_castor_wheel>
 
-
     <!-- Adding Diff Drive Controller -->
     <xacro:diff_drive_control />
-
 </robot>

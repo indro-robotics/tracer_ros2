@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
 <robot name="tracer_control" xmlns:xacro="http://wiki.ros.org/xacro">
-
     <xacro:macro name="velocity_control"
         params="
         name

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+
+<robot name="tracer" xmlns:xacro="http://wiki.ros.org/xacro">
+
+
+    <xacro:include filename="$(find tracer_description)/models/xacro/tracer_wheels.xacro" />
+    <xacro:include filename="$(find tracer_description)/models/xacro/tracer_castor_joints.xacro" />
+    <xacro:include filename="$(find tracer_description)/models/xacro/tracer_castor_wheels.xacro" />
+    <xacro:include filename="$(find tracer_description)/models/xacro/tracer_control.xacro" />
+    <xacro:include filename="$(find tracer_description)/models/xacro/tracer_gazebo.xacro" />
+
+    <xacro:property name="base_x_size" value="0.7200000" />
+    <xacro:property name="base_y_size" value="0.585000" />
+    <xacro:property name="base_z_size" value="0.125000" />
+
+    <xacro:property name="wheelbase" value="0.34" />
+    <xacro:property name="track" value="0.37910" />
+
+    <xacro:property name="castor_length" value="0.002" />
+    <xacro:property name="castor_radius" value="0.03724" />
+
+    <xacro:property name="wheel_length" value="0.8e-01" />
+    <xacro:property name="wheel_radius" value="6.2250e-02" />
+
+    <xacro:property name="wheel_vertical_offset" value="-0.079" />
+    <xacro:property name="main_wheel_vertical_offset" value="-0.0625" />
+    <xacro:property name="castor_offset" value="0.03" />
+
+    <xacro:property name="robot_namespace" value="/tracer" />
+
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="1.57 0 0" />
+            <geometry>
+                <mesh
+                    filename="package://tracer_description/models/meshes/tracer_base_link_no_wheel.dae" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 -0.045" rpy="0 0 0" />
+            <geometry>
+                <box size="${base_x_size} ${base_y_size} ${base_z_size}" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="inertial_link">
+        <inertial>
+            <mass value="132.389" />
+            <origin xyz="0.015 0.02313 0" />
+            <inertia ixx="0.185196"
+                ixy="4.3014E-08"
+                ixz="5.81E-08"
+                iyy="0.365"
+                iyz="-0.003867"
+                izz="0.22386" />
+        </inertial>
+    </link>
+    <joint name="inertial_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="base_link" />
+        <child link="inertial_link" />
+    </joint>
+
+    <xacro:tracer_wheel name="right" wheel_length="${wheel_length}" wheel_radius="${wheel_radius}">
+        <origin xyz="0 ${-wheelbase/2} ${main_wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:tracer_wheel>
+    <xacro:tracer_wheel name="left" wheel_length="${wheel_length}" wheel_radius="${wheel_radius}">
+        <origin xyz="0 ${wheelbase/2} ${main_wheel_vertical_offset}" rpy="0 0 0" />
+    </xacro:tracer_wheel>
+
+    <xacro:tracer_castor_joint name="front_right">
+        <origin xyz="${track/2} ${-wheelbase/2} ${castor_offset-0.0528886}" rpy="-1.57 0 0" />
+    </xacro:tracer_castor_joint>
+    <xacro:tracer_castor_joint name="front_left">
+        <origin xyz="${track/2} ${wheelbase/2} ${castor_offset-0.0528886}" rpy="-1.57 0 0" />
+    </xacro:tracer_castor_joint>
+    <xacro:tracer_castor_joint name="rear_right">
+        <origin xyz="${-track/2} ${-wheelbase/2} ${castor_offset-0.0528886}" rpy="-1.57 0 0" />
+    </xacro:tracer_castor_joint>
+    <xacro:tracer_castor_joint name="rear_left">
+        <origin xyz="${-track/2} ${wheelbase/2} ${castor_offset-0.0528886}" rpy="-1.57 0 0" />
+    </xacro:tracer_castor_joint>
+
+
+    <xacro:tracer_castor_wheel name="front_right">
+        <origin xyz="-0.0218084 ${-wheel_vertical_offset-0.0150} 0" rpy="0 0 0" />
+    </xacro:tracer_castor_wheel>
+    <xacro:tracer_castor_wheel name="front_left">
+        <origin xyz="-0.0218084 ${-wheel_vertical_offset-0.0150} 0" rpy="0 0 0" />
+    </xacro:tracer_castor_wheel>
+    <xacro:tracer_castor_wheel name="rear_right">
+        <origin xyz="-0.0218084 ${-wheel_vertical_offset-0.0150} 0" rpy="0 0 0" />
+    </xacro:tracer_castor_wheel>
+    <xacro:tracer_castor_wheel name="rear_left">
+        <origin xyz="-0.0218084 ${-wheel_vertical_offset-0.0150} 0" rpy="0 0 0" />
+    </xacro:tracer_castor_wheel>
+
+
+    <!-- Adding Diff Drive Controller -->
+    <xacro:diff_drive_control />
+
+</robot>

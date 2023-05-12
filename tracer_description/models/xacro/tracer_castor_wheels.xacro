@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="tracer_wheel">
+    <xacro:macro name="tracer_castor_wheel" params="name *origin">
+        <link name="${name}_wheel_link">
+            <visual>
+                <geometry>
+                    <mesh filename="package://tracer_description/models/meshes/castor.dae"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder radius="0.0375" length="0.05" />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="1" />
+                <inertia ixx="0.3131" ixy="0" ixz="0" iyy="0.3131" iyz="0" izz="0.1361" />
+            </inertial>
+        </link>
+        <joint name="${name}_wheel_joint" type="continuous">
+            <parent link="${name}_castor_link" />
+            <child link="${name}_wheel_link"/>
+            <dynamics damping="0.0" friction="0.0" />
+            <xacro:insert_block name="origin" />
+            <axis xyz="0 0 1" rpy="0 0 0" />
+        </joint>
+        
+    </xacro:macro>
+</robot>

@@ -84,14 +84,6 @@ def generate_launch_description():
         parameters=[robot_description_param],
     )
 
-    # Loading Controllers
-    joint_state_broadcaster = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster",
-                   "--controller-manager", "/tracer/controller_manager"],
-    )
-
     ld.add_action(robot_state_publisher_node)
 
     # Launching Gazebo
@@ -100,8 +92,5 @@ def generate_launch_description():
 
     # Spawning Robot
     ld.add_action(spawn_tracer_node)
-
-    # Loading Controllers
-    # ld.add_action(joint_state_broadcaster)
 
     return ld
